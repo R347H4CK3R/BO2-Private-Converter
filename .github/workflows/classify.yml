@@ -17,7 +17,7 @@ jobs:
       - name: Verify source folder
         shell: powershell
         run: |
-          if (-not (Test-Path -LiteralPath "C:\\BO2\\PS3_GAME") { throw "BO2 source folder not found" }
+          if (-not (Test-Path -LiteralPath "C:\\BO2\\PS3_GAME")) { throw "BO2 source folder not found" }
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
