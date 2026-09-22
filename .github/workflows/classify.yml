@@ -1,0 +1,29 @@
+name: Classify Local BO2 Data
+
+on:
+  workflow_dispatch:
+
+jobs:
+  classify:
+    runs-on: [self-hosted, Windows, X64]
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify source folder
+        shell: powershell
+        run: |
+          if (-not (Test-Path -LiteralPath "C:\\BO2\\PS3_GAME") { throw "BO2 source folder not found" }
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Classify local BO2 data
+        shell: powershell
+        run: |
+          python tools/classify_bo2.py --source "C:\\BO2\\PS3_GAME" --output reports
+      - name: Upload classification reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: bo2-local-classification
+          path: reports/
+          retention-days: 7
