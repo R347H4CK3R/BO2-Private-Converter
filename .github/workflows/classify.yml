@@ -2,6 +2,11 @@ name: Classify Local BO2 Data
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/classify_bo2.py'
+      - '.github/workflows/classify.yml'
 
 jobs:
   classify:
