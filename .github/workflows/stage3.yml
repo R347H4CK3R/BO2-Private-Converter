@@ -1,0 +1,28 @@
+name: Stage 3 Converter Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/stage3_validate.py'
+      - '.github/workflows/stage3.yml'
+
+jobs:
+  validate-converters:
+    runs-on: [self-hosted, Windows, X64]
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate conversion inputs
+        shell: powershell
+        run: python tools/stage3_validate.py --source "C:\BO2\PS3_GAME" --output reports
+      - name: Upload Stage 3 reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: bo2-stage3-validation
+          path: reports/
+          retention-days: 7
