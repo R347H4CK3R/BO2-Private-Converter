@@ -1,0 +1,28 @@
+name: Stage 4 Generate GameData
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/generate_gamedata.py'
+      - '.github/workflows/stage4.yml'
+
+jobs:
+  generate:
+    runs-on: [self-hosted, Windows, X64]
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate runtime-safe GameData manifest
+        shell: powershell
+        run: python tools/generate_gamedata.py --source "C:\BO2\PS3_GAME" --output "C:\BO2-Work\GeneratedGameData" --reports reports
+      - name: Upload Stage 4 manifests
+        uses: actions/upload-artifact@v4
+        with:
+          name: bo2-stage4-gamedata-manifests
+          path: reports/
+          retention-days: 7
