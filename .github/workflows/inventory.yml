@@ -8,6 +8,9 @@ on:
         required: true
         default: 'C:\\BO2\\PS3_GAME'
 
+  push:
+    branches: [main]
+
 jobs:
   inventory:
     runs-on: [self-hosted, Windows, X64]
