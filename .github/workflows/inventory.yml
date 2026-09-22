@@ -20,13 +20,13 @@ jobs:
       - name: Verify source folder
         shell: powershell
         run: |
-          if (-not (Test-Path -LiteralPath "${{ inputs.source_path }}")) {
-            throw "BO2 source folder not found: ${{ inputs.source_path }}"
+          if (-not (Test-Path -LiteralPath "C:\\BO2\\PS3_GAME")) {
+            throw "BO2 source folder not found: C:\\BO2\\PS3_GAME"
           }
       - name: Inventory local BO2 data
         shell: powershell
         run: |
-          py -3 tools/inventory_bo2.py --source "${{ inputs.source_path }}" --output reports
+          py -3 tools/inventory_bo2.py --source "C:\\BO2\\PS3_GAME" --output reports
       - name: Upload inventory reports
         uses: actions/upload-artifact@v4
         with:
