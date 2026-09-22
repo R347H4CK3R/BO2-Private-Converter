@@ -1,0 +1,32 @@
+name: Inventory Local BO2 Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_path:
+        description: Local PS3_GAME folder on the Windows runner
+        required: true
+        default: 'C:\\BO2\\PS3_GAME'
+
+jobs:
+  inventory:
+    runs-on: [self-hosted, Windows, X64]
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify source folder
+        shell: powershell
+        run: |
+          if (-not (Test-Path -LiteralPath "${{ inputs.source_path }}")) {
+            throw "BO2 source folder not found: ${{ inputs.source_path }}"
+          }
+      - name: Inventory local BO2 data
+        shell: powershell
+        run: |
+          py -3 tools/inventory_bo2.py --source "${{ inputs.source_path }}" --output reports
+      - name: Upload inventory reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: bo2-local-inventory
+          path: reports/
+          retention-days: 7
