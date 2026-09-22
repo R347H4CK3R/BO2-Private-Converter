@@ -23,10 +23,14 @@ jobs:
           if (-not (Test-Path -LiteralPath "C:\\BO2\\PS3_GAME")) {
             throw "BO2 source folder not found: C:\\BO2\\PS3_GAME"
           }
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Inventory local BO2 data
         shell: powershell
         run: |
-          py -3 tools/inventory_bo2.py --source "C:\\BO2\\PS3_GAME" --output reports
+          python tools/inventory_bo2.py --source "C:\\BO2\\PS3_GAME" --output reports
       - name: Upload inventory reports
         uses: actions/upload-artifact@v4
         with:
